@@ -63,6 +63,11 @@ j413.conf on the J713's measured twelve-channel sense stream, with its
 tweeters' own ADT DC resistances as z_min. Its kernel holds a locked
 SN012776 at about -100 dB, as on the J413, so it keeps the J413's 99.5 dB
 safe_reduction ([#10](https://github.com/aurora-silicon/speakerguardd/pull/10)).
+Its speakers were then measured on the machine, each voice coil's
+resistance its thermometer: the tweeters keep the J413's thermal
+resistances but take their own, faster time constants, and the woofers'
+measured heating is under the J413 constants, which stay. On that evidence
+it is qualified.
 
 ## What the numbers mean
 

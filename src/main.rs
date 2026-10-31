@@ -819,7 +819,7 @@ mod tests {
         for (m, text) in [("j316", include_str!("../conf/apple/j316.conf")), ("j413", include_str!("../conf/apple/j413.conf")), ("j616", include_str!("../conf/apple/j616.conf")), ("j700", include_str!("../conf/apple/j700.conf")), ("j713", include_str!("../conf/apple/j713.conf"))] {
             std::fs::write(conf.join("apple").join(format!("{m}.conf")), text).unwrap();
         }
-        for m in ["j316", "j413", "j616", "j713"] {
+        for m in ["j316", "j413", "j616"] {
             let path = conf.join("apple").join(format!("{m}.conf"));
             let e = load_config(&path, &args(&conf)).expect_err("an unqualified machine was governed");
             assert_eq!(exit_status(&e), EXIT_REFUSED, "{m}: {e}");
@@ -827,6 +827,7 @@ mod tests {
         let missing = conf.join("apple").join("j000.conf");
         assert_eq!(exit_status(&load_config(&missing, &args(&conf)).unwrap_err()), EXIT_REFUSED);
         assert!(load_config(&conf.join("apple").join("j700.conf"), &args(&conf)).is_ok());
+        assert!(load_config(&conf.join("apple").join("j713.conf"), &args(&conf)).is_ok());
         let other: Box<dyn std::error::Error> = "sense capture: EIO".into();
         assert_eq!(exit_status(other.as_ref()), 1);
         let _ = std::fs::remove_dir_all(&conf);

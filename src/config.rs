@@ -696,9 +696,12 @@ mod tests {
         let j713 = Config::parse(J713).unwrap();
         let j413 = Config::parse(J413).unwrap();
         assert_eq!(j713.globals.channels, 12);
-        assert!(!j713.globals.qualified);
+        // qualified on the machine (speakerguardd#10), where the J413 is not
+        assert!(j713.globals.qualified);
+        assert!(j713.check_governor().is_ok());
         let mut globals = j713.globals.clone();
         globals.channels = j413.globals.channels;
+        globals.qualified = j413.globals.qualified;
         assert_eq!(globals, j413.globals);
         assert_eq!(j713.controls, j413.controls);
         assert_eq!(j713.speakers.len(), j413.speakers.len());
