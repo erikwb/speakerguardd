@@ -692,6 +692,7 @@ mod tests {
         assert_eq!(ch("Right Tweeter"), (10, 11));
         // the J713: the J413's speakers on the M4 AOP's twelve-channel stream,
         // with its tweeters' own DC resistances as their minimum impedance
+        // and their measured time constants (speakerguardd#10)
         let j713 = Config::parse(J713).unwrap();
         let j413 = Config::parse(J413).unwrap();
         assert_eq!(j713.globals.channels, 12);
@@ -704,6 +705,12 @@ mod tests {
         for (a, b) in j713.speakers.iter().zip(&j413.speakers) {
             let mut a = a.clone();
             a.z_min_override = b.z_min_override;
+            if a.name.contains("Tweeter") {
+                assert_eq!((a.tau_coil, a.tau_magnet, a.vi_tau_coil, a.vi_tau_magnet), (1.85, 25.0, 1.85, 25.0), "{}", a.name);
+                a.tau_coil = b.tau_coil;
+                a.tau_magnet = b.tau_magnet;
+                a.vi_tau_magnet = b.vi_tau_magnet;
+            }
             assert_eq!(&a, b, "{}", b.name);
         }
         let s = |c: &Config, n: &str| c.speakers[idx(c, n)].clone();
